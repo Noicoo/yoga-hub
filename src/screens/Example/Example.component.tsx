@@ -1,20 +1,29 @@
-import React from 'react';
+import React, { FC } from 'react';
 import logo from '../../assets/logo.svg';
-import { Grid, Link, Typography } from '@material-ui/core';
+import { Button, Grid, Link, Typography } from '@material-ui/core';
 
-const ExampleComponent = () => {
+interface OwnProps {
+  displayLink: boolean;
+  onClick(): void;
+}
+
+const ExampleComponent: FC<OwnProps> = ({ displayLink, onClick }) => {
   return (
     <Grid container direction="column" justify="center" alignItems="center">
       <img src={logo} alt="logo" height={100} />
-      <Typography>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </Typography>
-      <Link
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer">
-        Learn React
-      </Link>
+      <Typography>storybook</Typography>
+
+      <Button onClick={onClick}>
+        {displayLink ? 'Hide link' : 'Show link'}
+      </Button>
+      {displayLink && (
+        <Link
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer">
+          Learn React
+        </Link>
+      )}
     </Grid>
   );
 };
