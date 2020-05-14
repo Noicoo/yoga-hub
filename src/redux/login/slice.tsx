@@ -20,14 +20,25 @@ const loginSlice = createSlice({
       state.error = '';
       state.isLoading = true;
     },
-    loginSuccess(state, action: PayloadAction<{ userToken: string }>) {
-      state.error = '';
-      state.isLoading = false;
-      state.userToken = action.payload.userToken;
+    loginSuccess: {
+      prepare(userToken) {
+        return { payload: { userToken } };
+      },
+      reducer(state, action: PayloadAction<{ userToken: string }>) {
+        state.error = '';
+        state.isLoading = false;
+        state.userToken = action.payload.userToken;
+      },
     },
-    loginFailure(state, action: PayloadAction<{ error: string }>) {
-      state.error = action.payload.error;
-      state.isLoading = false;
+    loginFailure: {
+      prepare(error) {
+        return { payload: { error } };
+      },
+      reducer(state, action: PayloadAction<{ error: string }>) {
+        state.error = action.payload.error;
+        state.isLoading = false;
+        state.userToken = '';
+      },
     },
   },
 });
