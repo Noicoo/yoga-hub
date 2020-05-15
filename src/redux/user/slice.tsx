@@ -1,18 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface UserToken {
+interface UserState {
   userToken: string;
   error: string;
   isLoading: boolean;
 }
 
-const initialState: UserToken = {
+const initialState: UserState = {
   isLoading: false,
   error: '',
   userToken: '',
 };
 
-const loginSlice = createSlice({
+export default createSlice({
   name: 'login',
   initialState,
   reducers: {
@@ -42,7 +42,3 @@ const loginSlice = createSlice({
     },
   },
 });
-
-export const { loginRequest, loginFailure, loginSuccess } = loginSlice.actions;
-
-export default loginSlice.reducer;
