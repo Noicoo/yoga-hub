@@ -9,7 +9,7 @@ const Navigation = () => (
         <Link to={routes.homePagePath}>Home</Link>
       </li>
       <li>
-        <Link to={routes.signinPath}>Sign In</Link>
+        <Link to={routes.signInPath}>Sign In</Link>
       </li>
     </ul>
   </div>

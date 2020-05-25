@@ -1,6 +1,6 @@
 import React from 'react';
 import Example from './screens/Example';
-import Signin from './screens/Signin';
+import SignIn from './screens/SignIn';
 import { routes } from './router';
 import { Provider } from 'react-redux';
 import store from '../src/redux/store';
@@ -14,7 +14,7 @@ const App = () => {
         <Navigation />
         <Switch>
           <Route exact path={routes.homePagePath} component={Example} />
-          <Route path={routes.signinPath} component={Signin} />
+          <Route path={routes.signInPath} component={SignIn} />
         </Switch>
       </Router>
     </Provider>
