@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import fire from '../../config/services/firebase';
+import fire from '../../services/firebase';
 
 const SignIn: FC = () => (
   <div
