@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
-  userToken: string;
+  userId: string;
   error: string;
   isLoading: boolean;
 }
@@ -9,7 +9,7 @@ interface UserState {
 const initialState: UserState = {
   isLoading: false,
   error: '',
-  userToken: '',
+  userId: '',
 };
 
 export default createSlice({
@@ -21,13 +21,13 @@ export default createSlice({
       state.isLoading = true;
     },
     loginSuccess: {
-      prepare(userToken) {
-        return { payload: { userToken } };
+      prepare(userId) {
+        return { payload: { userId } };
       },
-      reducer(state, action: PayloadAction<{ userToken: string }>) {
+      reducer(state, action: PayloadAction<{ userId: string }>) {
         state.error = '';
         state.isLoading = false;
-        state.userToken = action.payload.userToken;
+        state.userId = action.payload.userId;
       },
     },
     loginFailure: {
@@ -37,8 +37,12 @@ export default createSlice({
       reducer(state, action: PayloadAction<{ error: string }>) {
         state.error = action.payload.error;
         state.isLoading = false;
-        state.userToken = '';
+        state.userId = '';
       },
+    },
+    logOut(state) {
+      state.userId = '';
+      state.isLoading = false;
     },
   },
 });
