@@ -1,15 +1,15 @@
 import { RootState } from '../rootReducer';
 
-const getUserIsLoading = (state: RootState) => {
+const isLoading = (state: RootState) => {
   return state.user.isLoading;
 };
 
-const getUserId = (state: RootState) => {
+const userId = (state: RootState) => {
   return state.user.userId;
 };
 
-const getUserError = (state: RootState) => {
+const error = (state: RootState) => {
   return state.user.error;
 };
 
-export { getUserIsLoading, getUserId, getUserError };
+export { isLoading, userId, error };

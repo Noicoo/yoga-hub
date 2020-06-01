@@ -7,9 +7,7 @@ import { userSelectors } from '../redux/user';
 import LogOut from '../components/LogOut';
 
 const Navigation = () => {
-  const userId = useSelector((state: RootState) =>
-    userSelectors.getUserId(state)
-  );
+  const userId = useSelector((state: RootState) => userSelectors.userId(state));
   return (
     <div>
       <ul>

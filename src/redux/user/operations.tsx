@@ -1,5 +1,5 @@
 import { userActions } from './index';
-import { fireApi } from '../../services/firebase';
+import fireApi from '../../services/firebase';
 
 export const checkSocialMediaRedirect = () => {
   return (dispatch: any) => {
@@ -18,6 +18,7 @@ export const checkSocialMediaRedirect = () => {
 
 export const checkEmailAndPasswordLogin = (email: string, password: string) => {
   return (dispatch: any) => {
+    dispatch(userActions.loginRequest());
     fireApi
       .doSignInWithEmailAndPassword(email, password)
       .then((result) => {

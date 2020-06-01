@@ -1,28 +1,23 @@
 import React, { FC } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { userOperations } from '../../redux/user';
-import { useDispatch } from 'react-redux';
 
-interface SignInFormValues {
+export interface SignInFormValues {
   email: string;
   password: string;
 }
 
-const EmailAndPasswordSignIn: FC = () => {
-  const dispatch = useDispatch();
+interface OwnProps {
+  onSubmit(values: SignInFormValues): void;
+}
 
-  const handleSubmit = (values: SignInFormValues) => {
-    dispatch(
-      userOperations.checkEmailAndPasswordLogin(values.email, values.password)
-    );
-  };
+//always when I pass props to child I need to define an interface where I specify
+//the props' types
 
+const EmailAndPasswordSignIn: FC<OwnProps> = ({ onSubmit }) => {
   return (
     <div>
       <h2>Sign In with you email and password</h2>
-      <Formik
-        initialValues={{ email: '', password: '' }}
-        onSubmit={handleSubmit}>
+      <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
         {({ isValid }) => (
           <Form>
             <Field

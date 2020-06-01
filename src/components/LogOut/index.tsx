@@ -1,8 +1,9 @@
 import React, { FC } from 'react';
-import { fireApi } from '../../services/firebase';
+import fireApi from '../../services/firebase';
 import { useDispatch } from 'react-redux';
 import { userActions } from '../../redux/user';
 import { routes } from '../../router';
+import LogOutComponent from './LogOut.component';
 
 const LogOut: FC = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,11 @@ const LogOut: FC = () => {
       });
   };
 
-  return <div onClick={logOut}>Log Out</div>;
+  return (
+    <>
+      <LogOutComponent onClick={logOut} />
+    </>
+  );
 };
 
 export default LogOut;
