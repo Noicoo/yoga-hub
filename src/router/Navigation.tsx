@@ -2,12 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { routes } from './index';
 import { useSelector } from 'react-redux';
-import { RootState } from '../redux/rootReducer';
 import { userSelectors } from '../redux/user';
 import LogOut from '../components/LogOut';
 
 const Navigation = () => {
-  const userId = useSelector((state: RootState) => userSelectors.userId(state));
+  const userId = useSelector(userSelectors.userId);
   return (
     <div>
       <ul>

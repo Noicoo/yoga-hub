@@ -1,9 +1,6 @@
 import React, { FC } from 'react';
 import { routes } from '../../router';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { userSelectors } from '../../redux/user';
-import { RootState } from '../../redux/rootReducer';
 import { Redirect } from 'react-router-dom';
 import {
   FacebookLoginButton,
@@ -17,19 +14,19 @@ interface OwnProps {
   facebookSignIn(): void;
   googleSignIn(): void;
   onSubmit(values: SignInFormValues): void;
+  userId: string;
+  isLoading: boolean;
+  error: string;
 }
 
 const SignInComponent: FC<OwnProps> = ({
   facebookSignIn,
   googleSignIn,
   onSubmit,
+  userId,
+  isLoading,
+  error,
 }) => {
-  const userId = useSelector((state: RootState) => userSelectors.userId(state));
-  const isLoading = useSelector((state: RootState) =>
-    userSelectors.isLoading(state)
-  );
-  const error = useSelector((state: RootState) => userSelectors.error(state));
-
   return (
     <>
       {userId ? <Redirect to={routes.homePagePath} /> : null}
