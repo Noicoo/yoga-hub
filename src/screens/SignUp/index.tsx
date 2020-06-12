@@ -17,7 +17,6 @@ const SignUp: FC = () => {
       .doCreateUserWithEmailAndPassword(values.email, values.password)
       .then(function () {
         setSignUpSuccess(true);
-        console.log('You successfully signed up. You can now log in.');
       })
       .catch((error) => {
         setErrorMsg(error.message);
