@@ -9,14 +9,8 @@ import {
 import EmailAndPasswordSignIn, {
   SignInFormValues,
 } from './EmailAndPasswordSignIn';
-import {
-  Grid,
-  Box,
-  CircularProgress,
-  Container,
-  Backdrop,
-  Typography,
-} from '@material-ui/core';
+import { Grid, Box, Container, Typography } from '@material-ui/core';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 interface OwnProps {
   facebookSignIn(): void;
@@ -41,9 +35,7 @@ const SignInComponent: FC<OwnProps> = ({
       <Container>
         <Grid container direction="column" alignItems="center" justify="center">
           {isLoading ? (
-            <Backdrop open={true}>
-              <CircularProgress />
-            </Backdrop>
+            <LoadingSpinner />
           ) : (
             <div>
               <Grid item>

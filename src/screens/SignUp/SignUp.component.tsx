@@ -7,6 +7,7 @@ import { SignUpFormValues } from './index';
 import { TextField } from 'formik-material-ui';
 import { Button, Typography } from '@material-ui/core';
 import { Grid, Box, Container } from '@material-ui/core';
+import { SubmitButton } from './styled';
 
 const signUpSchema = yup.object().shape({
   email: yup
@@ -38,7 +39,7 @@ const SignUpComponent: FC<OwnProps> = ({
         <Grid container direction="column" alignItems="center" justify="center">
           <Box paddingTop={4} />
           <Grid item>
-            <h1>Create your account</h1>
+            <Typography variant="h5">Create your account</Typography>
           </Grid>
           <Box paddingTop={2} />
 
@@ -72,12 +73,8 @@ const SignUpComponent: FC<OwnProps> = ({
 
                   <Box paddingTop={2} />
 
-                  <Button
-                    type="submit"
-                    disabled={!isValid}
-                    fullWidth
-                    color="primary">
-                    Submit
+                  <Button type="submit" disabled={!isValid} fullWidth>
+                    <SubmitButton>Submit</SubmitButton>
                   </Button>
                 </Form>
               )}
