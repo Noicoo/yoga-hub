@@ -43,6 +43,10 @@ export default createSlice({
     logOut(state) {
       state.userId = '';
       state.isLoading = false;
+      state.error = '';
+    },
+    resetError(state) {
+      state.error = '';
     },
   },
 });

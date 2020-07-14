@@ -9,6 +9,8 @@ import {
 import EmailAndPasswordSignIn, {
   SignInFormValues,
 } from './EmailAndPasswordSignIn';
+import { Grid, Box, Container, Typography } from '@material-ui/core';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 interface OwnProps {
   facebookSignIn(): void;
@@ -28,25 +30,39 @@ const SignInComponent: FC<OwnProps> = ({
   error,
 }) => {
   return (
-    <>
+    <div>
       {userId ? <Redirect to={routes.homePagePath} /> : null}
-
-      {isLoading ? (
-        'loading'
-      ) : (
-        <>
-          <EmailAndPasswordSignIn onSubmit={onSubmit} />
-          {error ? error : null}
-          <GoogleLoginButton onClick={googleSignIn} />
-          <FacebookLoginButton onClick={facebookSignIn} />
-        </>
-      )}
-
-      <div>
-        You don't have an account?{' '}
-        <Link to={routes.signUpPath}>Sign up now!</Link>
-      </div>
-    </>
+      <Container>
+        <Grid container direction="column" alignItems="center" justify="center">
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <div>
+              <Grid item>
+                <Box paddingTop={4} />
+                <EmailAndPasswordSignIn onSubmit={onSubmit} />
+                {error ? error : null}
+              </Grid>
+              <Box paddingTop={1} />
+              <Grid item>
+                <GoogleLoginButton onClick={googleSignIn} />
+              </Grid>
+              <Box paddingTop={1} />
+              <Grid item>
+                <FacebookLoginButton onClick={facebookSignIn} />
+              </Grid>
+            </div>
+          )}
+          <Box paddingTop={5} />
+          <Grid item>
+            <Typography>
+              You don't have an account?{' '}
+              <Link to={routes.signUpPath}>Sign up now!</Link>
+            </Typography>
+          </Grid>
+        </Grid>
+      </Container>
+    </div>
   );
 };
 

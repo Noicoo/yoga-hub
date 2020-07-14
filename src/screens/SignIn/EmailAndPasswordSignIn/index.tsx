@@ -1,5 +1,9 @@
 import React, { FC } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { TextField } from 'formik-material-ui';
+import { Button } from '@material-ui/core';
+import { Box, Typography } from '@material-ui/core';
+import { SubmitButton } from '../styled';
 
 export interface SignInFormValues {
   email: string;
@@ -16,7 +20,8 @@ interface OwnProps {
 const EmailAndPasswordSignIn: FC<OwnProps> = ({ onSubmit }) => {
   return (
     <div>
-      <h2>Sign In with you email and password</h2>
+      <Typography variant="h5">Sign In with your email and password</Typography>
+      <Box paddingTop={2} />
       <Formik initialValues={{ email: '', password: '' }} onSubmit={onSubmit}>
         {({ isValid }) => (
           <Form>
@@ -25,18 +30,27 @@ const EmailAndPasswordSignIn: FC<OwnProps> = ({ onSubmit }) => {
               type="email"
               name="email"
               placeholder="email"
+              component={TextField}
+              fullWidth
             />
+
             <ErrorMessage name="email" component="div" />
+
             <Field
               autoComplete="off"
               type="password"
               name="password"
               placeholder="password"
+              component={TextField}
+              fullWidth
             />
             <ErrorMessage name="password" component="div" />
-            <button type="submit" disabled={!isValid}>
-              Submit
-            </button>
+
+            <Box paddingTop={2} />
+
+            <Button type="submit" disabled={!isValid} fullWidth>
+              <SubmitButton>Submit</SubmitButton>
+            </Button>
           </Form>
         )}
       </Formik>
