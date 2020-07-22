@@ -2,10 +2,11 @@ import React from 'react';
 import Example from './screens/Example';
 import SignIn from './screens/SignIn';
 import SignUp from './screens/SignUp';
+import AddVideo from './screens/AddVideo';
 import { routes } from './router';
 import { Provider } from 'react-redux';
 import store from '../src/redux/store';
-import { persistor } from '../src/redux/store';
+import { persistor } from './redux/store';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import { Grid } from '@material-ui/core';
@@ -29,6 +30,7 @@ const App = () => {
                   <Route exact path={routes.homePagePath} component={Example} />
                   <Route path={routes.signInPath} component={SignIn} />
                   <Route path={routes.signUpPath} component={SignUp} />
+                  <Route path={routes.addVideoPath} component={AddVideo} />
                 </Switch>
               </Grid>
             </Grid>

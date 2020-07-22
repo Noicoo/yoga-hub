@@ -21,24 +21,35 @@ const Navigation = () => {
           <MenuList>
             <Grid container direction="row">
               <Grid item>
-                <StyledMenuItem selected={currentPath === routes.homePagePath}>
-                  <Button component={Link} to={routes.homePagePath}>
+                <Button component={Link} to={routes.homePagePath}>
+                  <StyledMenuItem
+                    selected={currentPath === routes.homePagePath}>
                     <MenuItemButton>
                       <HomeIcon />
                     </MenuItemButton>
-                  </Button>
-                </StyledMenuItem>
+                  </StyledMenuItem>
+                </Button>
               </Grid>
               <Grid item>
-                <StyledMenuItem selected={currentPath === routes.signInPath}>
-                  {userId ? (
+                {userId ? (
+                  <>
                     <LogOut />
-                  ) : (
-                    <Button component={Link} to={routes.signInPath}>
-                      <MenuItemButton>Sign In</MenuItemButton>
+
+                    <Button component={Link} to={routes.addVideoPath}>
+                      <StyledMenuItem
+                        selected={currentPath === routes.addVideoPath}>
+                        <MenuItemButton>Add Video</MenuItemButton>
+                      </StyledMenuItem>
                     </Button>
-                  )}
-                </StyledMenuItem>
+                  </>
+                ) : (
+                  <Button component={Link} to={routes.signInPath}>
+                    <StyledMenuItem
+                      selected={currentPath === routes.signInPath}>
+                      <MenuItemButton>Sign In</MenuItemButton>
+                    </StyledMenuItem>
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </MenuList>
