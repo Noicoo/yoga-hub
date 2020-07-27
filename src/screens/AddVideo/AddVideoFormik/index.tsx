@@ -1,9 +1,14 @@
 import React, { FC } from 'react';
 import { Formik, Form, Field } from 'formik';
+import { FormControl, MenuItem } from '@material-ui/core';
 import * as yup from 'yup';
 import { TextField } from 'formik-material-ui';
 import { Button, ButtonGroup, Typography } from '@material-ui/core';
 import { Grid, Box, Container } from '@material-ui/core';
+import InputLabel from '@material-ui/core/InputLabel';
+import { Select } from 'formik-material-ui';
+// @ts-ignore
+import FormRatings from 'form-ratings';
 
 const addVideoSchema = yup.object().shape({
   youTubeLink: yup
@@ -13,10 +18,13 @@ const addVideoSchema = yup.object().shape({
       'Enter correct url!'
     )
     .required('Please enter website'),
+  level: yup.string().required('Please select the level'),
 });
 
 interface AddVideoFormUrl {
   youTubeLink: string;
+  level: string | boolean;
+  rating: number | null;
 }
 
 interface OwnProps {
@@ -36,7 +44,11 @@ const AddVideoFormik: FC<OwnProps> = ({ onSubmit }) => {
 
           <Grid item container justify="center">
             <Formik
-              initialValues={{ youTubeLink: '' }}
+              initialValues={{
+                youTubeLink: '',
+                level: '',
+                rating: null,
+              }}
               onSubmit={onSubmit}
               validationSchema={addVideoSchema}>
               {({ isValid, resetForm }) => (
@@ -49,6 +61,26 @@ const AddVideoFormik: FC<OwnProps> = ({ onSubmit }) => {
                     fullWidth
                   />
 
+                  <FormControl>
+                    <InputLabel htmlFor="level">Level</InputLabel>
+                    <Field
+                      component={Select}
+                      name="level"
+                      inputProps={{
+                        id: 'level',
+                      }}>
+                      <MenuItem value={'beginner'}>Beginner</MenuItem>
+                      <MenuItem value={'intermediate'}>Intermediate</MenuItem>
+                      <MenuItem value={'advanced'}>Advanced</MenuItem>
+                    </Field>
+                  </FormControl>
+
+                  <Box paddingTop={5} />
+                  <Box display="flex" justifyContent="center">
+                    <Field name="rating" as={FormRatings} />
+                  </Box>
+
+                  <Box paddingTop={5} />
                   <ButtonGroup fullWidth variant={'text'}>
                     <Button type="submit" disabled={!isValid} fullWidth>
                       Submit
