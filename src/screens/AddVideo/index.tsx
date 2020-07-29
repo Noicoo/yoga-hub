@@ -1,17 +1,30 @@
 import React, { useState } from 'react';
-import AddVideoComponent from './AddVideo.component';
+import AddVideoComponent, { Level } from './AddVideo.component';
 import { youTubeConfig } from '../../config';
+import { AddVideoFormUrl } from './AddVideoFormik';
+import { useSelector } from 'react-redux';
+import { userSelectors } from '../../redux/user';
 
 const AddVideo = () => {
   const [videoObject, setVideoObject] = useState<Object>({});
-
+  const userId = useSelector(userSelectors.userId);
   const axios = require('axios');
   const getVideoId = require('get-video-id');
 
   const youTubeApiCall = (
     videoId: string,
-    level: string | boolean,
+    level: Level,
     rating: number | null
+    //i thought about using an AddVideoUrl type here
+    //as well, but I would have to create a new object
+    //in the addVideo function: first I need to
+    //manipulate the youTubeLink string and get its id.
+    //Then i can can create a new object and pass it
+    //to the apiCall. Given this circumstance, I
+    //think that keeping the arguments as they are
+    //makes the code more readable (we know immediately that
+    //the formik values where manipulated before being
+    //passed further). I am open to critism, though! :P
   ) => {
     axios
       .get('https://www.googleapis.com/youtube/v3/videos', {
@@ -38,6 +51,7 @@ const AddVideo = () => {
           duration: response.data.items[0].contentDetails.duration,
           level: level,
           rating: rating,
+          user: userId,
         };
         setVideoObject(videoObject);
       })
@@ -46,13 +60,9 @@ const AddVideo = () => {
       });
   };
 
-  const addVideo = (
-    videoUrl: string,
-    level: string | boolean,
-    rating: number | null
-  ) => {
-    const videoId = getVideoId(videoUrl).id;
-    youTubeApiCall(videoId, level, rating);
+  const addVideo = (video: AddVideoFormUrl) => {
+    const videoId = getVideoId(video.youTubeLink).id;
+    youTubeApiCall(videoId, video.level, video.rating);
   };
 
   console.log(videoObject);
