@@ -10,3 +10,7 @@ export const firebaseConfig = {
   appId: '1:917271660519:web:d5083cb6f5847d98261f42',
   measurementId: 'G-Q4SL9NCPZC',
 };
+
+export const youTubeConfig = {
+  apiKey: constants.youTubeApiKey,
+};
