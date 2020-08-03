@@ -7,6 +7,7 @@ import { Button, ButtonGroup, Typography } from '@material-ui/core';
 import { Grid, Box } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Select } from 'formik-material-ui';
+import { WarningTypography } from './styled';
 // @ts-ignore
 import FormRatings from 'form-ratings';
 import { Level, Rating } from '../AddVideo.component';
@@ -30,9 +31,15 @@ export interface AddVideoFormUrl {
 
 interface OwnProps {
   onSubmit(values: AddVideoFormUrl): void;
+  videoIsDuplicate: boolean;
+  setVideoIsDuplicateToFalse: () => void;
 }
 
-const AddVideoFormik: FC<OwnProps> = ({ onSubmit }) => {
+const AddVideoFormik: FC<OwnProps> = ({
+  onSubmit,
+  videoIsDuplicate,
+  setVideoIsDuplicateToFalse,
+}) => {
   return (
     <div>
       <Box paddingTop={4} />
@@ -83,6 +90,11 @@ const AddVideoFormik: FC<OwnProps> = ({ onSubmit }) => {
             <Box display="flex" justifyContent="center">
               <Field name="rating" as={FormRatings} />
             </Box>
+            {videoIsDuplicate ? (
+              <Box display="flex" justifyContent="center">
+                <WarningTypography>Video Already Exists</WarningTypography>
+              </Box>
+            ) : null}
 
             <Box paddingTop={5} />
             <ButtonGroup fullWidth variant={'text'}>
@@ -90,7 +102,12 @@ const AddVideoFormik: FC<OwnProps> = ({ onSubmit }) => {
                 Submit
               </Button>
 
-              <Button type="button" onClick={() => resetForm()}>
+              <Button
+                type="button"
+                onClick={() => {
+                  resetForm();
+                  setVideoIsDuplicateToFalse();
+                }}>
                 Cancel
               </Button>
             </ButtonGroup>

@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AddVideoComponent, { Level } from './AddVideo.component';
 import { youTubeConfig } from '../../config';
 import { AddVideoFormUrl } from './AddVideoFormik';
 import { useSelector } from 'react-redux';
 import { userSelectors } from '../../redux/user';
+import fireApi from '../../services/firebase';
 
 const AddVideo = () => {
   const [videoObject, setVideoObject] = useState<Object>({});
+  const [videoIsDuplicate, setVideoIsDuplicate] = useState<boolean>(false);
   const userId = useSelector(userSelectors.userId);
   const axios = require('axios');
   const getVideoId = require('get-video-id');
+
+  useEffect(() => {
+    fireApi.addToDb('videos', videoObject);
+  }, [videoObject]);
+
+  const setVideoIsDuplicateToTrue = () => {
+    setVideoIsDuplicate(true);
+  };
+
+  const setVideoIsDuplicateToFalse = () => {
+    setVideoIsDuplicate(false);
+  };
 
   const youTubeApiCall = (
     videoId: string,
@@ -37,11 +51,6 @@ const AddVideo = () => {
         },
       })
       .then(function (response: any) {
-        //just extract what I need and update the local state
-        //then i will ad a useEffect hook that will listen for
-        //the videoObject change in the local state. whenever I have a new
-        //valid video added (no error and no duplicate - check id), it will upload the video
-        //to the firestore backend (list of videos)
         const videoObject = {
           id: response.data.items[0].id,
           title: response.data.items[0].snippet.title,
@@ -62,12 +71,30 @@ const AddVideo = () => {
 
   const addVideo = (video: AddVideoFormUrl) => {
     const videoId = getVideoId(video.youTubeLink).id;
-    youTubeApiCall(videoId, video.level, video.rating);
+    const videoCollection = fireApi.getCollectionFromDb('videos');
+    videoCollection
+      .where('id', '==', videoId)
+      .get()
+      .then(function (querySnapshot) {
+        if (querySnapshot.empty) {
+          setVideoIsDuplicateToFalse();
+          youTubeApiCall(videoId, video.level, video.rating);
+        } else {
+          setVideoIsDuplicateToTrue();
+        }
+      })
+      .catch(function (error) {
+        console.log('Error getting documents: ', error);
+      });
   };
 
-  console.log(videoObject);
-
-  return <AddVideoComponent addVideo={addVideo} />;
+  return (
+    <AddVideoComponent
+      addVideo={addVideo}
+      videoIsDuplicate={videoIsDuplicate}
+      setVideoIsDuplicateToFalse={setVideoIsDuplicateToFalse}
+    />
+  );
 };
 
 export default AddVideo;
