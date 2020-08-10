@@ -1,6 +1,8 @@
 import firebase from 'firebase';
 import 'firebase/firestore';
 import { firebaseConfig } from '../config';
+import youTubeApi from './youTube';
+import { AddVideoFormUrl } from '../screens/AddVideo/AddVideoFormik';
 
 const fire = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
@@ -8,10 +10,21 @@ const fireAuth = fire.auth();
 
 const fireApi = {
   //Auth API
-  addToDb: (collectionName: string, addedItem: object) =>
-    db.collection(collectionName).add(addedItem),
-  getCollectionFromDb: (collectionName: string) =>
-    db.collection(collectionName),
+  checkIfVideoExists: (videoId: string) =>
+    db
+      .collection('videos')
+      .where('id', '==', videoId)
+      .get()
+      .then((querySnapshot) => querySnapshot.empty),
+  addVideoToDb: (videoId: string, video: AddVideoFormUrl, userId: string) =>
+    youTubeApi.getVideoInfo(videoId).then((youTubeData) => {
+      db.collection('videos').add({
+        ...youTubeData,
+        rating: video.rating,
+        level: video.level,
+        user: userId,
+      });
+    }),
   doCreateUserWithEmailAndPassword: (email: string, password: string) =>
     fireAuth.createUserWithEmailAndPassword(email, password),
 

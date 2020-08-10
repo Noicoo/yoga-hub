@@ -16,7 +16,7 @@ const addVideoSchema = yup.object().shape({
   youTubeLink: yup
     .string()
     .matches(
-      /^(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\-_]+)/,
+      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi,
       'Enter correct url!'
     )
     .required('Please enter website'),
@@ -33,13 +33,23 @@ interface OwnProps {
   onSubmit(values: AddVideoFormUrl): void;
   videoIsDuplicate: boolean;
   setVideoIsDuplicateToFalse: () => void;
+  videoAdded: boolean;
+  clearMessage: () => void;
 }
 
 const AddVideoFormik: FC<OwnProps> = ({
   onSubmit,
   videoIsDuplicate,
   setVideoIsDuplicateToFalse,
+  videoAdded,
+  clearMessage,
 }) => {
+  const initialValues: AddVideoFormUrl = {
+    youTubeLink: '',
+    level: '',
+    rating: null,
+  };
+
   return (
     <div>
       <Box paddingTop={4} />
@@ -55,12 +65,11 @@ const AddVideoFormik: FC<OwnProps> = ({
       <Box paddingTop={2} />
 
       <Formik
-        initialValues={{
-          youTubeLink: '',
-          level: '',
-          rating: null,
+        initialValues={initialValues}
+        onSubmit={(values, { resetForm }) => {
+          onSubmit(values);
+          resetForm();
         }}
-        onSubmit={onSubmit}
         validationSchema={addVideoSchema}>
         {({ isValid, resetForm }) => (
           <Form>
@@ -70,6 +79,7 @@ const AddVideoFormik: FC<OwnProps> = ({
               placeholder="https://www.youtube.com/watch?v=fldJek9xDoQ"
               component={TextField}
               fullWidth
+              onKeyUp={clearMessage}
             />
 
             <FormControl>
@@ -90,9 +100,16 @@ const AddVideoFormik: FC<OwnProps> = ({
             <Box display="flex" justifyContent="center">
               <Field name="rating" as={FormRatings} />
             </Box>
+
             {videoIsDuplicate ? (
               <Box display="flex" justifyContent="center">
                 <WarningTypography>Video Already Exists</WarningTypography>
+              </Box>
+            ) : null}
+
+            {videoAdded ? (
+              <Box display="flex" justifyContent="center">
+                <Typography>Video Added to your Favourites</Typography>
               </Box>
             ) : null}
 

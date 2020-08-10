@@ -8,12 +8,16 @@ interface OwnProps {
   addVideo(video: AddVideoFormUrl): void;
   videoIsDuplicate: boolean;
   setVideoIsDuplicateToFalse: () => void;
+  videoAdded: boolean;
+  clearMessage: () => void;
 }
 
 const AddVideoComponent: FC<OwnProps> = ({
   addVideo,
   videoIsDuplicate,
   setVideoIsDuplicateToFalse,
+  videoAdded,
+  clearMessage,
 }) => {
   return (
     <Container>
@@ -21,9 +25,12 @@ const AddVideoComponent: FC<OwnProps> = ({
         <Grid item sm={2} md={3}></Grid>
         <Grid direction="column" item xs={12} sm={8} md={6}>
           <AddVideoFormik
-            onSubmit={(values) => addVideo(values)}
+            // onSubmit={(values) => addVideo(values)}
+            onSubmit={addVideo}
             videoIsDuplicate={videoIsDuplicate}
             setVideoIsDuplicateToFalse={setVideoIsDuplicateToFalse}
+            videoAdded={videoAdded}
+            clearMessage={clearMessage}
           />
         </Grid>
         <Grid item sm={2} md={3}></Grid>
