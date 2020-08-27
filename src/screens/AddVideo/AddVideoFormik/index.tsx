@@ -7,6 +7,7 @@ import { Button, ButtonGroup, Typography } from '@material-ui/core';
 import { Grid, Box } from '@material-ui/core';
 import InputLabel from '@material-ui/core/InputLabel';
 import { Select } from 'formik-material-ui';
+import { WarningTypography } from './styled';
 // @ts-ignore
 import FormRatings from 'form-ratings';
 import { Level, Rating } from '../AddVideo.component';
@@ -15,7 +16,7 @@ const addVideoSchema = yup.object().shape({
   youTubeLink: yup
     .string()
     .matches(
-      /^(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\-_]+)/,
+      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/gi,
       'Enter correct url!'
     )
     .required('Please enter website'),
@@ -30,9 +31,25 @@ export interface AddVideoFormUrl {
 
 interface OwnProps {
   onSubmit(values: AddVideoFormUrl): void;
+  videoIsDuplicate: boolean;
+  onCancel: () => void;
+  videoAdded: boolean;
+  clearMessage: () => void;
 }
 
-const AddVideoFormik: FC<OwnProps> = ({ onSubmit }) => {
+const AddVideoFormik: FC<OwnProps> = ({
+  onSubmit,
+  videoIsDuplicate,
+  onCancel,
+  videoAdded,
+  clearMessage,
+}) => {
+  const initialValues: AddVideoFormUrl = {
+    youTubeLink: '',
+    level: '',
+    rating: null,
+  };
+
   return (
     <div>
       <Box paddingTop={4} />
@@ -48,12 +65,11 @@ const AddVideoFormik: FC<OwnProps> = ({ onSubmit }) => {
       <Box paddingTop={2} />
 
       <Formik
-        initialValues={{
-          youTubeLink: '',
-          level: '',
-          rating: null,
+        initialValues={initialValues}
+        onSubmit={(values, { resetForm }) => {
+          onSubmit(values);
+          resetForm();
         }}
-        onSubmit={onSubmit}
         validationSchema={addVideoSchema}>
         {({ isValid, resetForm }) => (
           <Form>
@@ -63,6 +79,7 @@ const AddVideoFormik: FC<OwnProps> = ({ onSubmit }) => {
               placeholder="https://www.youtube.com/watch?v=fldJek9xDoQ"
               component={TextField}
               fullWidth
+              onKeyUp={clearMessage}
             />
 
             <FormControl>
@@ -84,13 +101,30 @@ const AddVideoFormik: FC<OwnProps> = ({ onSubmit }) => {
               <Field name="rating" as={FormRatings} />
             </Box>
 
+            {videoIsDuplicate ? (
+              <Box display="flex" justifyContent="center">
+                <WarningTypography>Video Already Exists</WarningTypography>
+              </Box>
+            ) : null}
+
+            {videoAdded ? (
+              <Box display="flex" justifyContent="center">
+                <Typography>Video Added to your Favourites</Typography>
+              </Box>
+            ) : null}
+
             <Box paddingTop={5} />
             <ButtonGroup fullWidth variant={'text'}>
               <Button type="submit" disabled={!isValid} fullWidth>
                 Submit
               </Button>
 
-              <Button type="button" onClick={() => resetForm()}>
+              <Button
+                type="button"
+                onClick={() => {
+                  resetForm();
+                  onCancel();
+                }}>
                 Cancel
               </Button>
             </ButtonGroup>
