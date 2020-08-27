@@ -40,8 +40,8 @@ const AddVideo = () => {
   return (
     <AddVideoComponent
       addVideo={addVideo}
-      onCancel={videoIsDuplicate}
-      onConfirm={setVideoIsDuplicateToFalse}
+      videoIsDuplicate={videoIsDuplicate}
+      onCancel={setVideoIsDuplicateToFalse}
       videoAdded={videoAdded}
       clearMessage={clearMessage}
     />

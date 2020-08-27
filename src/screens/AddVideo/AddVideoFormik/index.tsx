@@ -31,16 +31,16 @@ export interface AddVideoFormUrl {
 
 interface OwnProps {
   onSubmit(values: AddVideoFormUrl): void;
-  onCancel: boolean;
-  onConfirm: () => void;
+  videoIsDuplicate: boolean;
+  onCancel: () => void;
   videoAdded: boolean;
   clearMessage: () => void;
 }
 
 const AddVideoFormik: FC<OwnProps> = ({
   onSubmit,
+  videoIsDuplicate,
   onCancel,
-  onConfirm,
   videoAdded,
   clearMessage,
 }) => {
@@ -101,7 +101,7 @@ const AddVideoFormik: FC<OwnProps> = ({
               <Field name="rating" as={FormRatings} />
             </Box>
 
-            {onCancel ? (
+            {videoIsDuplicate ? (
               <Box display="flex" justifyContent="center">
                 <WarningTypography>Video Already Exists</WarningTypography>
               </Box>
@@ -123,7 +123,7 @@ const AddVideoFormik: FC<OwnProps> = ({
                 type="button"
                 onClick={() => {
                   resetForm();
-                  onConfirm();
+                  onCancel();
                 }}>
                 Cancel
               </Button>

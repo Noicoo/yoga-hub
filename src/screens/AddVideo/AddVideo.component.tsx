@@ -6,16 +6,16 @@ export type Level = 'beginner' | 'intermediate' | 'advanced' | '';
 export type Rating = 1 | 2 | 3 | 4 | 5 | null;
 interface OwnProps {
   addVideo(video: AddVideoFormUrl): void;
-  onCancel: boolean;
-  onConfirm: () => void;
+  videoIsDuplicate: boolean;
+  onCancel: () => void;
   videoAdded: boolean;
   clearMessage: () => void;
 }
 
 const AddVideoComponent: FC<OwnProps> = ({
   addVideo,
+  videoIsDuplicate,
   onCancel,
-  onConfirm,
   videoAdded,
   clearMessage,
 }) => {
@@ -27,8 +27,8 @@ const AddVideoComponent: FC<OwnProps> = ({
           <AddVideoFormik
             // onSubmit={(values) => addVideo(values)}
             onSubmit={addVideo}
+            videoIsDuplicate={videoIsDuplicate}
             onCancel={onCancel}
-            onConfirm={onConfirm}
             videoAdded={videoAdded}
             clearMessage={clearMessage}
           />
